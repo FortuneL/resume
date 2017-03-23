@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				background: url(img/blackboard.jpg);
+				font-family:"微软雅黑";
+				color: #666;
+			}
+			#box{
+				width: 400px;
+				overflow: hidden;
+				margin: 100px auto;
+				background: #fff;
+				box-shadow: 0 0 20px #333;
+			}
+			
+			#text{
+				float: left;
+				width: 380px;
+				height: 500px;
+				overflow: hidden;
+				position: relative;
+				line-height: 26px;
+			}
+			#text div{
+				padding: 20px;
+				position: absolute;
+				top: 0;
+			}
+			#bar{
+				width: 20px;
+				float: right;
+				position: relative;
+				height: 500px;
+			}
+			#bar span{
+				width: 100%;
+				height: 20px;
+				background: #ccc;
+				display: block;
+				position: relative;
+				background: linear-gradient(rgba(204, 204, 204, 0.8), rgba(153, 153, 153, 0.8));
+    			cursor: default;
+			}
+			#bar span:first-child:before{
+				content: '';
+				position: absolute;
+				right: 0;
+				left: 0;
+				margin: auto;
+				width: 0;
+				height: 0;
+				border-width: 7px;
+				border-style: solid;
+				border-color: transparent transparent #fff;
+			}
+			#bar span:first-child.active{
+				 background: linear-gradient(rgba(179, 179, 179, 0.8), rgba(128, 128, 128, 0.8));
+			}
+			#bar span:last-child:before{
+				content: '';
+				position: absolute;
+				top: 5px;
+				right: 0;
+				left: 0;
+				margin: auto;
+				width: 0;
+				height: 0;
+				border-width: 7px;
+				border-style: solid;
+				border-color: #fff transparent transparent;
+				margin-bottom: 3px;
+			}
+			#bar span:last-child{
+				background: linear-gradient(rgba(153, 153, 153, 0.8), rgba(204, 204, 204, 0.8));
+			}
+			#bar span:last-child.active{
+				 background: linear-gradient(rgba(128, 128, 128, 0.8), rgba(179, 179, 179, 0.8));
+			}
+			#bar>div{
+				width: 100%;
+				height: 460px;
+				position: relative;
+				background: rgba(153, 153, 153, 0.3);
+			}
+			.slide{
+				width: 100%;
+				height: 100px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				background: linear-gradient(#84d2ff, #3299FF);
+				box-shadow: 1px 2px 3px rgba(51, 51, 51, 0.8);
+			}
+			.slide:hover{
+				background: linear-gradient(#529bff, #026cff);
+			}
+			.slide.active{
+				 background: linear-gradient(#026cff, #529bff);
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var box=document.getElementById("box");
+				var slide=document.querySelector(".slide");
+				var bar=document.getElementById("bar");
+				var slideWrap=bar.querySelector('div');
+				var text=document.getElementById("text");
+				var textCon=text.querySelector('div');
+				var btns=bar.querySelectorAll("span");
+				var timer=null;
+				
+				var slideTop=0;			//滚动条走的距离
+
+				//设置滚动条的长度随内容多少成反比变化
+				slide.style.height=(slideWrap.clientHeight*box.clientHeight)/textCon.clientHeight+'px';
+				console.log('slide.style.height',slide.style.height)
+				console.log('slide.offsetHeight',slide.offsetHeight)
+				var maxHeight=slideWrap.offsetHeight-slide.offsetHeight;		//滑块能走到的最大距离
+				
+				//如果内容区域高度小于显示区域，不显示滚动条
+				if(box.clientHeight>textCon.clientHeight){
+					slide.style.display='none';
+				}else{
+					
+				
+					//滑块拖拽
+					slide.onmousedown=function(ev){
+						this.className='slide active';
+						
+						var disY=ev.clientY-slide.offsetTop;
+						
+						document.onmousemove=function(ev){
+							slideTop=ev.clientY-disY;
+							scroll();
+						};
+						document.onmouseup=function(){
+							slide.className='slide';
+							this.onmousemove=null;
+						};
+						
+						ev.cancelBubble=true;
+						return false;
+					};
+				
+					//滚轮功能
+					myScroll(box,function(){
+						slideTop-=10;
+						scroll();
+					},function(){
+						slideTop+=10;
+						scroll();
+					});
+					
+					//上下箭头的功能
+					for(var i=0;i<btns.length;i++){
+						btns[i].index=i;
+						btns[i].onmousedown=function(){
+							this.className='active';
+							var n=this.index;
+							timer=setInterval(function(){
+								slideTop=n?slideTop+5:slideTop-5;
+								scroll();
+							},16);
+						};
+						btns[i].onmouseup=function(){
+							this.className='';
+							clearInterval(timer);
+						};
+					}
+					
+					//滑块区域点击功能
+					slideWrap.onmousedown=function(ev){
+						
+						timer=setInterval(function(){
+							slideMiddle=slide.getBoundingClientRect().top+slide.offsetHeight/2;
+							if(ev.clientY<slideMiddle){
+								//这个条件成立说明现在鼠标在滑块的上面，滚动条往上走
+								slideTop-=5;
+							}else{
+								//这个条件成立说明现在鼠标在滑块的下面，滚动条往下走
+								slideTop+=5;
+							}
+							
+							//如果二者之差在5以内就认为到达了中心点
+							if(Math.abs(ev.clientY-slideMiddle)<=5){
+								clearInterval(timer);
+							}
+							scroll();
+						},16);
+						return false;	//注意位置
+					};
+					slideWrap.onmouseup=function(){
+						clearInterval(timer);
+					};	
+					
+					//滚动条的主体内容
+					function scroll(){
+						if(slideTop<0){
+							slideTop=0;
+						}else if(slideTop>maxHeight){
+							slideTop=maxHeight;
+						}
+						
+						var scaleY=slideTop/maxHeight;
+						
+						slide.style.top=slideTop+'px';
+						textCon.style.top=-(textCon.offsetHeight-text.offsetHeight)*scaleY+'px';
+					}
+					
+					//滚轮事件
+					function myScroll(obj,fnUp,fnDown){
+						obj.onmousewheel=fn;
+						obj.addEventListener('DOMMouseScroll',fn);
+						
+						function fn(ev){
+							if(ev.wheelDelta>0 || ev.detail<0){
+								fnUp.call(obj);
+							}else{
+								fnDown.call(obj);
+							}
+							
+							ev.preventDefault();
+							return false;
+						}
+					}					
+				}
+
+			};
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<div id="text">
+				<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi pariatur provident temporibus impedit earum ducimus minus nesciunt illum dolore laudantium sit deleniti animi iure iusto voluptatem assumenda cupiditate perferendis minima.
+				</div>
+			</div>
+			<div id="bar">
+				<span></span>
+				<div>
+					<div class="slide"></div>
+				</div>
+				<span></span>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				background-color: gray;
+			}
+			.alertBox{
+				width: 300px;
+				height: 80px;
+				border-radius: 5%;
+				display: none;
+				background: rgba(0,0,0,0.5);
+				color: white;
+				text-align: center;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+				z-index: 1;		
+			}
+			input{
+				outline: none;
+			}
+			.lBtn{
+				position: absolute;
+				left: 20px;
+				top: 50%;
+			}
+			.rBtn{
+				position: absolute;
+				right: 20px;
+				top: 50%;
+			}			
+			input:hover{
+				cursor: pointer;
+			}
+			
+			img{
+				border: 1px solid white;			
+				border-width: 20px 10px;				
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div class="alertBox fist"><p>这是第一张，不能在往前啦&nbsp;o(>ω<)o</p></div>
+		<div class="alertBox last"><p>已经到最后一张啦&nbsp;o(>ω<)o</p></div>
+		<div>
+			<input type="image" class="lBtn" src="img/icon_左箭头.png" />	
+		</div>
+		<div>
+			<img class="pic" src="img/browse_1.jpg"/>			
+		</div>
+		<div>
+			<input type="image" class="rBtn" src="img/icon_右箭头.png" />
+		</div>
+		<script>
+			var alertBoxes=document.querySelectorAll(".alertBox");
+			console.log(alertBoxes)
+			var inputs=document.querySelectorAll("input");
+			var pic=document.querySelector("img");
+			var n=0;
+			var src=['img/browse_1.jpg','img/browse_2.jpg','img/browse_3.jpg','img/browse_4.jpg','img/browse_5.jpg','img/browse_6.jpg'];
+			
+			//光标移入移出可视区效果
+			document.onmouseover=function(){
+				inputs[0].style.display=inputs[1].style.display='block'
+			}
+			document.onmouseout=function(){
+				inputs[0].style.display=inputs[1].style.display='none'
+			}
+			
+			//向前查看
+			function previous(){
+				n--;
+				if(n<0){
+					alertBoxes[0].style.display='block';
+					setTimeout(function(){
+						alertBoxes[0].style.display='none';
+					},600)
+					n=0;
+				}else{
+					pic.setAttribute('src', src[n]);
+				}					
+			}
+			//向后查看
+			function next(){
+				n++;
+				if(n>src.length-1){
+					alertBoxes[1].style.display='block';
+					setTimeout(function(){
+						alertBoxes[1].style.display='none';
+					},600)
+					n=src.length-1
+				}else{
+					pic.setAttribute('src', src[n]);
+				}					
+			}
+			//左按钮添加点击事件，让图片向前
+			inputs[0].onclick=function(){
+				previous();
+			}
+			//右按钮添加点击事件，让图片向后
+			inputs[1].onclick=function(){
+				next();
+			}
+			//封装滚轮事件
+			function myScroll(obj,upFn,downFn){
+				obj.onmousewheel=fn;
+				obj.addEventListener('DOMMouseScroll',fn);
+			
+				function fn(ev){
+					if(ev.wheelDelta>0 || ev.detail<0){
+						upFn();
+					}else{
+						downFn();
+					}
+					ev.preventDefault();
+					return false;
+				};
+			}
+			myScroll(document,previous,next);
+		</script>		
+	</body>
+</html>

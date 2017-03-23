@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>地址栏选择</title>
+		<meta charset="utf-8" />
+		<style type="text/css">
+			*{margin:0; padding:0;}
+			.wrap{text-align:center; padding:50px 0;}
+			.wrap select{border:1px solid #ccc; border-radius:4px; padding:4px; outline:none;}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<select id="province">
+				<option>省级</option>
+			</select>
+			<select id="city">
+				<option>市级</option>
+			</select>
+			<select id="county">
+				<option>县级</option>
+			</select>
+		</div>
+		<script type="text/javascript" src="js/jquery-3.1.0.js"></script>
+		<script type="text/javascript" src="js/area.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				function setAddress(pro){
+					var $province = $("#province");
+					var $city = $("#city");
+					var $county = $("#county");
+					var _province,_city;
+					//填充省级数据
+					var _html = "";
+					$.each(obj,function(i,v){
+						_html+="<option value='"+i+"'>"+i+"</option>";
+					})
+					$province.html(_html);
+					$province.find("option[value='"+pro+"']").attr("selected",true);
+					setCity(pro);
+					//填充市级数据
+					function setCity(province){
+						var html = "";
+						$.each(obj[province],function(i,v){
+							html+="<option value='"+i+"'>"+i+"</option>";
+						})
+						$city.html(html);
+						_province = province;
+						setCounty($city.find("option:selected").text());
+					}
+					//填充县级数据
+					function setCounty(city){
+						var html = "";
+						$.each(obj[_province][city],function(i,v){
+							html+="<option value='"+v+"'>"+v+"</option>";
+						})
+						$county.html(html);
+					}
+		
+					$province.change(function(){
+						_province = $(this).find("option:selected").text();
+						setCity(_province);
+					})
+		
+					$city.change(function(){
+						_city = $(this).find("option:selected").text();
+						setCounty(_city);
+					})
+				}
+		
+				setAddress("北京市");
+			})
+		</script>
+	</body>
+</html>

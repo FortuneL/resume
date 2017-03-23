@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			img{
+				position: absolute;
+				top: 300px;
+				left: 400px;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				
+				var img=document.getElementById("img");
+				var key={
+					37:false,
+					38:false,
+					39:false,
+					40:false
+				};
+				
+				document.onkeydown=function(ev){
+					key[ev.keyCode]=true;
+				};
+				document.onkeyup=function(ev){
+					key[ev.keyCode]=false;
+				};
+				
+				var l=null,t=null;
+				setInterval(function(){
+					if(key[37]){
+						l=img.offsetLeft-5;
+					}
+					if(key[38]){
+						t=img.offsetTop-5;
+					}
+					if(key[39]){
+						l=img.offsetLeft+5;
+					}
+					if(key[40]){
+						t=img.offsetTop+5;
+					}
+					(l=l<0?0:l)&&(l=l>(window.innerWidth-img.getBoundingClientRect().width)?(window.innerWidth-img.getBoundingClientRect().width):l);
+					(t=t<0?0:t)&&(t=t>(window.innerHeight-img.getBoundingClientRect().height)?(window.innerHeight-img.getBoundingClientRect().height):t);
+					img.style.left=l+'px';
+					img.style.top=t+'px';
+				},16);
+			};
+		</script>
+	</head>
+	<body>
+		<img id="img" src="img/dog.jpg"/>
+	</body>
+</html>

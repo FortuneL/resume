@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			ul{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				border: 1px black solid;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -429px;
+				margin-top: -181px;
+			}
+			li{
+				position: absolute;
+				overflow: hidden;
+			}
+			.n2{
+				left: 248px;/*238+10*/
+			}
+			.n3{
+				left: 372px;/*238+10+114+10*/
+			}
+			.n4{
+				left: 248px;/*238+10*/
+				top: 124px;/*114+10*/
+			}
+			.n5{
+				left: 248px;/*238+10*/
+				top: 248px;/*114+10+114+10*/
+			}
+			.n6{
+				left: 372px;/*238+10+114+10*/
+				top: 248px;/*114+10+114+10*/
+			}
+			.n7{
+				left: 496px;/*238+10+114+10+114+10*/				
+			}
+			.n8{
+				left: 496px;/*238+10+114+10+114+10*/
+				top: 248px;/*238+10*/				
+			}			
+			.n9{
+				left: 744px;/*238+10+114+10+114+10+238+10*/
+			}
+			.n10{
+				left: 744px;/*238+10+114+10+114+10+238+10*/
+				top: 124px;/*114+10*/
+			}
+			.n11{
+				width: 114px;
+				height: 114px;
+				left: 744px;/*238+10+114+10+114+10+238+10*/
+				top: 248px;/*114+10+114+10*/
+				background: red;
+				text-align: center;
+				display: table-cell;
+				vertical-align: middle;
+				position: relative;
+			}
+			a{
+				display: inline-block;
+				width: 44px;
+				font: bold 22px/30px "微软雅黑";
+				color: white;
+				text-decoration: none;
+			}
+			div{
+				position: absolute;
+				background: rgba(255,60,60,0.8);
+			}
+			span{
+				display: block;
+			}
+			.n1 div{
+				color: white;
+				width: 238px;
+				height: 200px;
+				top: 262px;
+			}			
+			.n2 div{
+				width: 114px;
+				height: 114px;
+			}
+			.n3 div{
+				width: 114px;
+				height: 114px;
+			}
+			.n4 div{
+				width: 238px;
+				height: 114px;
+			}
+			.n5 div{
+				width: 114px;
+				height: 114px;
+			}
+			.n6 div{
+				width: 114px;
+				height: 114px;
+			}
+			.n7 div{
+				width: 238px;
+				height: 238px;
+			}
+			.n8 div{
+				width: 238px;
+				height: 114px;
+			}
+			.n9 div{
+				width: 114px;
+				height: 114px;
+			}
+			.n10 div{
+				width: 114px;
+				height: 114px;
+			}
+			img{
+				display: block;
+			}
+			/*div:hover{
+				cursor: pointer;
+			}
+			
+					*/
+			.cover0{
+				text-align: center;
+			}
+			.cover0 p{
+				margin-top: 70px;
+				border-top: 1px solid white;
+				border-bottom: 1px solid white;
+			}
+			.cover0 p a{
+				font: 12px "微软雅黑";
+			}
+			.cover0 span a{
+				width: 200px;
+				font: 14px "微软雅黑";
+			}			
+		</style>
+		<script src="js/jquery-3.1.0.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<ul class="wrap">
+			<li class="n1">
+				<img src="img/psh.jpg" alt="" />
+				<div class="cover0">
+					<h2>朴树“好好地”</h2>
+					<p><a href="#">上海站</a><a href="#">北京站</a><a href="#">广州站</a><a href="#">福州站</a></p>
+					<span><a href="#">巡演专题</a></span>
+				</div>
+			</li>
+			<li class="n2">
+				<img src="img/lyl.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n3">
+				<img src="img/dzq.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n4">
+				<img src="img/mayday.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n5">
+				<img src="img/zhj.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n6">
+				<img src="img/zhl.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n7">
+				<img src="img/zhxy.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n8">
+				<img src="img/jay.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n9">
+				<img src="img/ljr.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n10">
+				<img src="img/zhhm.jpg" alt="" />
+				<div class="cover"></div>
+			</li>
+			<li class="n11">
+				<a href="#">更多巡演</a>
+			</li>
+		</ul>
+		<script type="text/javascript">
+			$(function(){
+				$('li').first().mouseover(function(){
+					$(this).find('.cover0').stop().animate({'top':162},300);
+				}).mouseout(function(){
+					$(this).find('.cover0').stop().animate({'top':262},300);
+				})
+				console.log($('li').first().find('.cover'));
+				$('li ').each(function(){
+					$(this).find('.cover').css('top',-$(this).height());
+					$(this).mouseover(function(){
+						$(this).find('.cover').stop().animate({'top':0},500);
+					}).mouseout(function(){
+						$(this).find('.cover').stop().animate({'top':$(this).height()},500,function(){
+							$(this).css('top',-$(this).height());
+						});
+					})
+				})
+				
+			})
+		</script>
+	</body>
+	
+</html>

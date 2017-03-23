@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			div{
+				position:absolute;
+				left: 30%;
+				float: left;
+				margin-right: 20px;
+			}
+			.small{
+				position: relative;
+				height: 462px;	/*问题:为什么开始的时候，small的高度不是462px*/
+			}
+			.big{
+				width: 363px;
+				height: 462px;
+				overflow: hidden;
+				position: relative;
+				display: none;
+			}
+			.moveBox{
+				width: 181px;
+				height: 231px;
+				background-color: rgba(255,165,0,0.5);
+				position: absolute;
+			}
+			.big img{
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		</style>
+		<script src="js/jquery-3.1.0.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div class="small">
+			<img src="img/magnify_small.jpg"/>
+			<div class="moveBox" style="display: none;"></div>
+		</div>
+		<div class="big">
+			<img src="img/magnify_big.png"/>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$('.small').mouseover(function(){
+					
+					$('.moveBox').css('display','block');
+					$('.big').css('display','block');
+				}).mousemove(function(ev){
+					//之前获取宽高都用innerWidth/Height、outerWidth/Height，结果出现光标移动一段时间后，小方块跟不上光标的问题
+					var l=ev.clientX-$('.small').position().left-$('.moveBox').width()/2;
+					var t=ev.clientY-$('.small').position().top-$('.moveBox').height()/2;
+					
+					if(l<=0){
+						l=0;
+					}else if(l>$('.small').width()-$('.moveBox').width()){
+						l=$('.small').width()-$('.moveBox').width();
+					}
+					if(t<=0){
+						t=0;
+					}else if(t>$('.small').height()-$('.moveBox').height()){
+						t=$('.small').height()-$('.moveBox').height();
+					}
+					
+					$('.moveBox').css('left',l);
+					$('.moveBox').css('top',t);
+					
+					var scaleX=l/($('.small').width()-$('.moveBox').width());
+					var scaleY=t/($('.small').height()-$('.moveBox').height());
+					
+					$('.big img').css({
+						'left':($('.big').width()-$('.big img').width())*scaleX,
+						'top':($('.big').height()-$('.big img').height())*scaleY
+					});
+				}).mouseout(function(){
+					$('.moveBox').css('display','none');
+					$('.big').css('display','none');
+				});
+			});
+		</script>
+	</body>
+</html>

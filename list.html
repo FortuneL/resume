@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>作品列表</title>
+		<style type="text/css">
+			body, h2,p{margin:0;}
+			body{
+				position: relative;
+				background: url(练习_原生JS/img/blackboard.jpg);
+				color: white;
+			}
+			ol,ul{margin:0; padding:0; list-style: none;}
+			a{
+				text-decoration: none;
+				color: white;
+			}
+			ul{
+				width: 100%;
+				padding: 20px 30px;
+			}
+			ul li{
+				margin-bottom: 20px;
+			}
+			h2{
+				margin-bottom: 10px;
+			}
+			ol li{
+				padding-left: 10px;
+				margin-bottom: 10px;
+			}
+			h2,ol li:hover{
+				cursor: pointer;
+			}
+			div{
+				width: 300px;
+				height: 800px;
+				position: absolute;
+				top: 100px;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+			ol{
+				height: 0;
+				overflow: hidden;
+			}
+		</style>
+		<script src="练习_jQuery/js/jquery-3.1.0.js"></script>
+	</head>
+	<body>
+		<div class="">
+			<ul>
+				<!--<li>
+					<h2 class="title">切图练习</h2>
+					<ol>
+						<li><a href=""></a></li>
+						<li>表单</li>
+						<li>表格</li>
+					</ol>
+				</li>-->
+			</ul>
+		</div>
+	</body>
+	<script>
+		var data=[
+			[
+				{title: "切图练习"},
+				{title: "整站", url: "练习_切图/整站.html"},
+				{title: "表格", url: "练习_切图/表格.html"},
+				{title: "表单", url: "练习_切图/表单.html"}
+			],
+			[
+				{title: "CSS3练习"},
+				{title: "轮播图(CSS3版)", url: "练习_CSS3/轮播图(CSS3版).html"},
+				{title: "立方体", url: "练习_CSS3/立方体.html"}
+			],
+			[
+				{title: "jQuery练习"},
+				{title: "地址选择栏", url:  "练习_jQuery/地址选择栏.html"},
+				{title: "放大镜(jQuery版)", url: "练习_jQuery/放大镜(jQuery版).html"},
+				{title: "手风琴效果", url: "练习_jQuery/手风琴效果.html"},
+				{title: "演唱会广告", url: "练习_jQuery/演唱会广告.html"}
+			],	
+			[
+				{title: "原生JS练习"},
+				{title: "选项卡", url: "练习_原生JS/选项卡.html"},
+				{title: "下拉广告", url: "练习_原生JS/下拉广告.html"},
+				{title: "日历", url: "练习_原生JS/日历.html"},
+				{title: "轮播图(面向过程版)", url: "练习_原生JS/轮播图(面向过程版).html"},
+				{title: "轮播图(面向对象版)", url: "练习_原生JS/轮播图(面向对象版).html"},
+				{title: "拖拽边框改变大小的方块", url: "练习_原生JS/拖拽边框改变大小的方块.html"},
+				{title: "放大镜(原生JS版)", url: "练习_原生JS/放大镜(原生JS版).html"},
+				{title: "键盘事件-方向键控制目标移动", url: "练习_原生JS/键盘事件-方向键控制目标移动.html"},
+				{title: "键盘事件-方向键控制图片切换", url: "练习_原生JS/键盘事件-方向键控制图片切换.html"},
+				{title: "滚轮事件-滚轮控制图片切换", url: "练习_原生JS/滚轮事件-滚轮控制图片切换.html"},
+				{title: "自定义滚动条", url: "练习_原生JS/自定义滚动条.html"}
+			]	
+		];
+		var str='';
+		console.log(data)
+		for(var i=0; i<data.length; i++){
+			str+='<li><h2 class="title">'+data[i][0].title+'</h2><ol>';
+			
+			for(var j=1; j<data[i].length; j++)(
+				str+='<li><a href="'+data[i][j].url+'" target="_blank">'+data[i][j].title+'</a></li>'
+			)
+			str+='</ol></li>';
+		}
+				
+		$(function(){		
+				
+			$('ul').html(str);
+			$('h2').click(function(){
+				var This=$(this)
+				$('ol').stop().animate({height:0},150,function(){
+					This.next().stop().animate({height:31*This.next().children().length},500,'swing');
+				});
+			});
+		})
+	</script>
+</html>

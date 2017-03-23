@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#ad{
+				background: url(img/ad.jpg);
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var ad=document.getElementById("ad");
+				var t1;
+				var t2;
+				
+				var h=parseInt(getComputedStyle(ad).height);
+				
+				t1=setInterval(function(){
+					h++;
+					ad.style.height=h+'px';
+					
+					//让它在250的高度的时候就停止运动，接着要停上3秒
+					if(h==250){
+						clearInterval(t1);
+						
+						//停止3秒
+						t2=setTimeout(function(){
+							t1=setInterval(function(){
+								clearTimeout(t2);
+								h--;
+								ad.style.height=h+'px';
+								
+								//要让div回到100的位置就停止
+								if(h==100){
+									clearInterval(t1);
+								}
+							},16);
+						},3000);
+					}
+				},16);
+			}		
+		</script>
+	</head>
+	<body>
+		<div id="ad"></div>
+	</body>
+</html>

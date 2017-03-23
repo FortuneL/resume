@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			/*整体宽960*/
+			/*主区域 顶部 960x38 上左右边框各1*/
+			/*主区域 表单 box 宽642 左右下边框各1*/
+			/*主区域 右背景316x640 右下边框各1px*/
+			
+			/*淡字体颜色：#ababab*/
+			/*链接字体颜色：#003399*/
+			/*主字体颜色：#555555*/
+			
+			
+			body, h1, h2, h3, h4, h5, h6, p, dl, dd, form{margin:0;}   ol,ul{margin:0; padding:0; list-style: none;}
+			a{text-decoration: none;}
+			input{ border: none; padding: 0;}
+			
+			body{
+				font-size: 12px;
+				color: #555555;
+			}
+			
+			
+			.clearfix:after{
+				content: '';
+				display: block;
+				clear: both;
+			}
+			.center{
+				width: 958px;
+				margin: 0 auto;
+			}
+			.sheet{
+				width: 642px;
+				border-left: 1px solid #e0e0e0;
+			}
+			nav{
+				width: 960px;
+				background: url(images/netease_bg_header.png) no-repeat;
+				padding-bottom: 20px;
+			}
+			nav div.left
+			{
+				margin-top: 31px;
+				float: left;
+			}
+			nav div.right{
+				float: right;
+				margin-top: 31px;
+			}
+			nav div.right a{
+				padding: 0 7px;
+				width: 60px;
+				color: #003399;
+				font: 11px/26px "微软雅黑";
+			}
+
+			/*选择注册方式按钮样式*/				
+			#main-sheet .btn{
+				text-align: center;
+			}
+			button{
+				width: 135px;
+				height: 33px;
+				padding: 0;
+				border: 1px solid #b6b6b6;
+				background: url(images/netease_bg_strip_btn.PNG) repeat-x;
+				cursor: pointer;
+				margin-top: 50px;
+			}
+			button.left{
+				border-top-left-radius: 3px;
+				border-bottom-left-radius: 3px;
+				border-right: none;
+			}
+			button.right{
+				border-top-right-radius: 3px;
+				border-bottom-right-radius: 3px;
+				border-left: none;
+			}
+			.current{
+				color: white;
+				border: 1px solid #15509c;
+				background: url(images/netease_bg_strip_btn_current.PNG) repeat-x;
+				cursor: auto;
+			}			
+			
+			
+
+			/*主内容区*/
+			section{
+				height: 678px;
+			}
+			#main-top{
+				width: 958px;
+				height: 37px;
+				border: 1px solid #5b88b8;
+				border-bottom: none;
+				border-radius: 2px;
+				background: url(images/netease_bg_strip.PNG) repeat-x;
+			}
+			#main-top p{
+				padding-left: 21px;
+				font: 13px/36px "微软雅黑";
+				color: white;
+			}
+			#main-sheet{
+				width: 640px;
+				border: 1px solid #e0e0e0;
+				border-top: none;
+				float: left;
+			}
+			#main-sheet span{
+				color: red;
+			}
+			label{
+				font-size: 13px;
+			}
+			input{
+				height: 25px;
+				border: 1px solid #ababab;
+				border-radius: 2px ;
+				-webkit-box-shadow: inset 2px 2px 3px #f3f3f3;
+				-moz-box-shadow: inset 2px 2px 3px #f3f3f3;
+				box-shadow: inset 2px 2px 3px #f3f3f3;
+				margin-left: 20px;
+			}
+			#main-sheet .tel{
+				margin-top: 32px;
+				margin-left: 90px;
+			}
+			#main-sheet .tel input{
+				width: 247px;
+				padding-left: 20px;
+				background: url(images/netease_img_cellphone.png) no-repeat left bottom;
+			}
+			#main-sheet .tel #suffix{
+				color: #000000;
+				font-weight: bold;
+			}
+			#main-sheet .tel p{
+				margin: 8px 0 0 85px;
+				color: #ababab;
+			}
+			#main-sheet .pic{
+				margin-top: 35px;
+				padding-left: 78px;
+			}
+			#main-sheet .pic .label{
+				margin-top: 9px;
+			}			
+			#main-sheet .pic div{
+				float: left;
+			}
+			#main-sheet .pic .input{
+				margin-left: 20px;
+			}
+			#main-sheet .pic .input input{
+				margin-left: 3px;
+				padding: 0;
+				width: 206px;
+			}
+			#main-sheet .pic .input p{
+				margin-top: 20px;
+				color: #ababab;
+				margin-left: 7px;
+			}
+			#main-sheet .pic .input button{
+				margin-left: 3px;
+				margin-top: 12px;
+				width: 138px;
+				border-radius: 3px;
+			}		
+			#main-sheet .pic .test_pic{
+				margin-left: 4px;
+				margin-top: -12px;
+			}
+			#main-sheet .pic .test_pic img{
+				border: 1px solid #e7e7e7;
+			}			
+			#main-sheet .pic .test_pic a{
+				display: block;
+				color: #003399;
+			}			
+			#main-sheet .msg{
+				margin-top: 16px;
+				margin-left: 78px;
+			}
+			#main-sheet .msg input{
+				width: 332px;
+			}			
+			#main-sheet .msg p{
+				margin-top: 8px;
+				margin-left: 97px;
+				color: #ababab;				
+			}
+			#main-sheet .pswd{
+				margin-top: 16px;
+				margin-left: 114px;
+			}
+			#main-sheet .pswd input{
+				width: 332px;
+				margin-left: 22px;
+			}			
+			#main-sheet .pswd p{
+				margin-top: 8px;
+				margin-left: 62px;
+				color: #ababab;				
+			}
+			#main-sheet .afm-pswd{
+				margin-top: 16px;
+				margin-left: 90px;
+			}
+			#main-sheet .afm-pswd input{
+				width: 332px;
+			}			
+			#main-sheet .afm-pswd p{
+				margin-top: 8px;
+				margin-left: 86px;
+				color: #ababab;				
+			}
+			#main-sheet .register span{
+				color: #ababab;
+				
+			}
+			.register a{
+				color: #003399;
+			}
+			.items{
+				margin-left: 178px;
+				margin-top: 27px;
+				height: auto;
+				box-shadow: none;
+			}		
+			input:nth-last-child(1){
+				width: 117px;
+				height: 35px;
+				color: white;
+				border-color: #2f7d1b;
+				margin: 20px 0 31px 179px;
+				box-shadow: none;
+				display: block;
+				background: url(images/netease_bg_strip_btn_register.png) repeat-x;
+			}
+			.right-bg{
+				width: 315px;
+				height: 639px;
+				border-right: 1px solid #e0e0e0;
+				border-bottom: 1px solid #e0e0e0;
+				float: right;
+				background: url(images/netease_bg_main.png);
+			}
+			footer{
+				padding-top: 14px;
+			}
+			footer div{
+				margin-left: 211px;
+				color: #ababab;
+			}
+			footer a{
+				margin-right: 8px;
+				color: #ababab;
+			}
+			a:hover{
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="center clearfix">
+			<div class="left">
+				<a href=""><img src="images/netease_img_163.png"/></a>
+				<a href=""><img src="images/netease_img_126.png"/></a>
+				<a href=""><img src="images/netease_img_yeah.png"/></a>
+			</div>
+			<div class="right"><a href="#">了解更多</a><span>|</span><a href="#">反馈意见</a>
+			</div>
+		</nav>
+		<section class="main center">
+			<div id="main-top">
+				<p>欢迎注册无限容量的网易邮箱！邮件地址可以登录使用其他网易旗下产品。</p>
+			</div>
+			<div id="main-sheet">
+				<div class="btn">
+					<button class="left">注册字母邮箱</button><button class="current">注册手机号码邮箱</button><button class="right">注册VIP邮箱</button>
+				</div>
+
+				<div id="sheet-content">
+					<div class="tel">
+						<span id="">*</span>
+						<label for="tel-num">手机号码</label>
+						<input type="text" id="tel-num" />&nbsp;<span id="suffix">@163.com</span>
+						<p>请填写手机号码</p>
+					</div>
+					<div class="pic clearfix">
+						<div class="label">
+							<span id="">*</span>
+							<label for="pic-code">图片验证码</label>
+						</div>
+						<div class="input">
+							<input type="text" id="pic-code" />
+							<p>请填写图片中的字符，不区分大小写</p>
+							<button>免费获取验证码</button>
+						</div>
+						<div class="test_pic">
+							<img src="images/netease_imag_testpic.png" alt="" />
+							<a href="#">看不清楚？换张图片</a>
+						</div>				
+					</div>
+					<div class="msg">
+						<span id="">*</span>
+						<label for="msg-code">短信验证码</label>
+						<input type="text" id="msg-code" />
+						<p>请查收手机短信，并填写短信中的验证码</p>
+					</div>
+					<div class="pswd">
+						<span id="">*</span>
+						<label for="password">密码</label>
+						<input type="text" id="password" />
+						<p>6~16个字符，区分大小写</p>
+					</div>
+					<div class="afm-pswd">
+						<span id="">*</span>
+						<label for="affirm-password">确认密码</label>
+						<input type="text" id="affirm-password" />
+						<p>请再次填写密码</p>
+					</div>
+					<div class="register">
+						<input class="items" type="checkbox" name="" value=""  checked="checked"/><span>同意<a href="#">"服务条款"</a>和<a href="#">"用户须知"</a>、<a href="#">"隐私权相关政策"</a></span>
+						<input type="button" value="立即注册"/>
+					</div>	
+				</div>
+			</div>
+			<div class="right-bg">
+				
+			</div>
+		</section>
+		<footer class="center">
+			<div id=""><a href="#">关于网易</a><a href="">关于网易免费邮</a><a href="">邮箱官方博客</a><a href="">客户服务</a><a href="">隐私政策</a>&nbsp;<span>|</span>&nbsp;&nbsp;&nbsp;<span>网易公司版权所有 © 1997-2017</span>
+				
+			</div>
+			
+		</footer>
+	</body>
+</html>

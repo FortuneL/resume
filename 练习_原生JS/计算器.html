@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>计算器</title>
+		<style>
+			/*苹果iphone5屏幕尺寸 320*568*/
+			
+			body, h1, h2, h3, h4, h5, h6, p, dl, dd, form{margin:0;}
+			ol,ul{margin:0; padding:0; list-style: none;}
+			a{text-decoration: none;}
+			input{ border: none; padding: 0;}
+			#calc{
+				position:relative;
+				width:320px;
+				background:black;
+				margin:50px auto;
+				border-left: 3px solid black;
+				border-right: 2px solid black;
+				border-bottom: 2px solid black;
+			}
+
+			.output{
+				width: 310px;
+				height: 108px;
+				background: black;
+				font: 56px/108px arial;
+				font-weight: 100;
+				font-family: "Segoe UI", arial;
+				color: white;
+				text-align: right;
+				padding: 0 5px;
+			}
+			ul{
+				background: black;
+				width: 320px;
+				height: 400px;
+			}
+			li{
+				float: left;
+				margin: 0 1px 1px 0;
+			}
+			img{
+				height: 79px;
+				display: block;
+			}
+			#num0 img{
+				width: 158.5px;
+			}
+			img:hover{
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<input id="formula" type="text" readonly="readonly" value="" />
+		<div id="calc">
+			<div class="output">0</div>
+		    <ul class="">
+		        <li id="clear" class="symbol"><img src="img/calc_clear.png"/></li>
+		        <li id="neg" class="symbol"><img src="img/calc_neg.png"/></li>
+		        <li id="percent" class="symbol"><img src="img/calc_percent.png"/></li>
+		        <li id="divison" class="symbol"><img src="img/calc_divison.png"/></li>
+		        
+		        <li id="num7" class="num"><img src="img/calc_7.png"/></li>
+		        <li id="num8" class="num"><img src="img/calc_8.png"/></li>
+		        <li id="num9" class="num"><img src="img/calc_9.png"/></li>
+		        <li id="multi" class="symbol"><img src="img/calc_multi.png"/></li>
+		        
+		        <li id="num4" class="num"><img src="img/calc_4.png"/></li>
+		        <li id="num5" class="num"><img src="img/calc_5.png"/></li>
+		        <li id="num6" class="num"><img src="img/calc_6.png"/></li>
+		        <li id="sub" class="symbol"><img src="img/calc_sub.png"/></li>
+		        
+		        <li id="num1" class="num"><img src="img/calc_1.png"/></li>
+		        <li id="num2" class="num"><img src="img/calc_2.png"/></li>
+		        <li id="num3" class="num"><img src="img/calc_3.png"/></li>
+		        <li id="plus" class="symbol"><img src="img/calc_plus.png"/></li>
+		        
+		        <li id="num0" class="num"><img src="img/calc_0.png"/></li>
+		        <li id="dot" class="num"><img src="img/calc_dot.png"/></li>
+		        <li id="equal" class="symbol"><img src="img/calc_equal.png"/></li>
+		    </ul>
+		</div>
+		<script>
+			/*
+			 * 3月17日完成初稿，遗留问题：
+			 * 1、光标停在键上时，应有高亮效果；
+			 * 2、增加显示区显示已输入内容；
+			 * 3、通过正则表达式对已输入内容进行检查，有不和逻辑的需要报错。
+			 * 
+			 */
+			window.onload = function (){
+				var calc = document.getElementById("calc");
+				var nums= calc.getElementsByClassName('num');
+				var symbols = calc.getElementsByClassName("symbol");
+				var output = calc.getElementsByClassName("output")[0];
+				var formula = document.getElementById("formula");
+				var symbolClicked = false;
+				var equalClicked=false;
+				var negClicked=false;
+				var arr=[];
+				var str='';
+				for(var i=0;i< nums.length;i++){
+					nums[i].index=i;
+					nums[i].onclick=function(){
+						if(output.innerHTML=='0'){
+							console.log(output.innerHTML)
+							output.innerHTML='';
+						}
+						//如果上次按了符号键,那么这次按数字的时候,应该清空显示屏再输出
+						if(symbolClicked){
+							output.innerHTML='';
+							symbolClicked = false;
+						}
+						//如果上次按了等于，那么这次按数字应该进行新一轮的计算。
+						if(equalClicked){
+							str='';
+							equalClicked = false;
+						}
+						switch(this.index){
+							
+							case 0: temp=output.innerHTML=numKey(output.innerHTML, 7);
+									break;
+							case 1: temp=output.innerHTML=numKey(output.innerHTML, 8);
+									break;
+							case 2: temp=output.innerHTML=numKey(output.innerHTML, 9);
+									break;
+							case 3: temp=output.innerHTML=numKey(output.innerHTML, 4);
+									break;
+							case 4: temp=output.innerHTML=numKey(output.innerHTML, 5);
+									break;
+							case 5: temp=output.innerHTML=numKey(output.innerHTML, 6);
+									break;
+							case 6: temp=output.innerHTML=numKey(output.innerHTML, 1);
+									break;
+							case 7: temp=output.innerHTML=numKey(output.innerHTML, 2);
+									break;
+							case 8: temp=output.innerHTML=numKey(output.innerHTML, 3);
+									break;
+							case 9: temp=output.innerHTML=numKey(output.innerHTML, 0);
+									break;
+							case 10: temp=output.innerHTML+='.';
+									break;
+						}							
+					}
+				}
+				
+				for (var i = 0; i < symbols.length; i++){
+					symbols[i].onclick = function (){
+						symbolClicked = true;
+						equalClicked = false;
+						switch(this.getAttribute('id')){
+							
+							case "clear":	output.innerHTML = '0';
+											str = "";
+											break;
+											
+							case "neg":		negClicked=true;
+											symbolClicked = false;
+											output.innerHTML=toggle(output.innerHTML);
+											break;
+											
+							case "percent":	if(output.innerHTML.indexOf('-')!=-1){
+												output.innerHTML='-'+(parseFloat(output.innerHTML.slice(1))/100).toString();
+												console.log(1)
+											}else{
+												output.innerHTML=(parseFloat(output.innerHTML)/100).toString();
+												console.log(2)
+											}
+											console.log(output.innerHTML);
+											break;
+											
+							case "divison": arr.push(output.innerHTML+'/');
+											break;
+											
+							case "multi":	arr.push(output.innerHTML+'*');
+											break;
+											
+							case "sub":		arr.push(output.innerHTML+'-');
+											break;
+											
+							case "plus":	arr.push(output.innerHTML+'+');
+											break;
+											
+							case "equal":	arr.push(output.innerHTML);
+											str=arr.join('');
+											console.log(str);
+											output.innerHTML = eval(str);
+											arr=[];
+											str='';
+											equalClicked=true;
+											break;
+						}
+					}	
+				}
+				
+				//计算结果
+				function count(val){
+					output.innerHTML=eval(val);
+				}
+				
+				//数字键函数
+				function numKey(str, n){
+					if(str=='-0'){
+						str=-n;
+					}else{
+						str+=n;
+					}
+					return str;
+				}
+				
+				//正负转换
+				function toggle(str){
+					if(str.indexOf('-')!=-1){
+						return str.slice(1);
+					}else{
+						return '-'+str;
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

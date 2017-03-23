@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>拖拽改变大小</title>
+		<style type="text/css">
+			#box{
+				height: 100px;
+				width: 100px;
+				background: lightgreen;
+			   /*这种定位会出问题，不然拖拽的时候会跳
+				*position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -50px;
+				margin-left: -50px;*/
+				position: absolute;
+				left: 400px;
+				top: 400px;		
+			}
+			/*
+			 * 鼠标方向
+			 * 左	w-resize
+			 * 上	n-resize
+			 * 右	e-resize
+			 * 下	s-resize
+			 * 
+			 * 左上	nw-resize
+			 * 右上	ne-resize
+			 * 右下	se-resize
+			 * 左下	sw-resize
+			 * 左右	ew-resize
+			 * 上下	ns-resize
+			 */			
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			
+		</div>
+		<script type="text/javascript">
+			window.onload=function(){
+				//获取元素
+				var box=document.getElementById('box');
+				var isDown=false		//鼠标是否按下，false表示未按下
+				var boxInfo={}
+				var cursorDownPos={}
+
+				//box添加mosedown事件
+				box.onmousedown=function(ev){
+					isDown=true
+					cursorDownPos={
+						cursorXdown:ev.clientX,
+						cursorYdown:ev.clientY						
+					}
+					boxInfo={			//需要在鼠标按下的时候获取，保证每次获取都是拖动将要发生时最新的box信息
+						l: getPos(box).left,
+						r: getPos(box).right,
+						t: getPos(box).top,
+						b: getPos(box).bottom,
+						w: box.clientWidth,
+						h: box.clientHeight
+					}
+					console.log(boxInfo)
+					
+					//实现拖拽
+					//如果鼠标按下时，光标在box向内压缩10px所留出的范围，鼠标抬起前移动光标可以实现拖拽
+//					if
+					if(ev.clientY<getPos(box).top+10){
+						cursorState+='n'
+					}
+					if(ev.clientY>getPos(box).bottom-10){
+						cursorState+='s'
+					}
+					if(ev.clientX<getPos(box).left+10){
+						cursorState+='w'
+					}
+					if(ev.clientX>getPos(box).right-10){
+						cursorState+='e'
+					}					
+				}					
+				//moseup事件要加给document
+				document.onmouseup=function(){
+					isDown=false
+				}		
+
+				//document添加mousemove事件，判断鼠标位置
+				document.onmousemove=function(ev){
+					
+					if(!isDown){
+						box.style.cursor='auto';	//要写到if(!isDown){}里。不然的话，拖拽的过程中cursor又变成了auto					
+						cursorState=''	/*1、要写到if(!isDown){}里。之前写到了外面，每次按住拖拽的时候，cursorState总是''
+										 *2、要使用全局变量。因为这里声明的局部变量会预解析到这个函数最开始的部分var cursorState=undefined，当条件满足else时，直接进入else代码块，当于没有声明变量直接用，所以会报错
+										 * */
+						//用这种方法的时候，下面的判断顺序不能改变。每个判断都需要用一个独立的if
+						if(ev.clientY<getPos(box).top+10){
+							cursorState+='n'
+						}
+						if(ev.clientY>getPos(box).bottom-10){
+							cursorState+='s'
+						}
+						if(ev.clientX<getPos(box).left+10){
+							cursorState+='w'
+						}
+						if(ev.clientX>getPos(box).right-10){
+							cursorState+='e'
+						}
+						box.style.cursor=cursorState+'-resize'
+					}else{
+						var newHeight
+						var newWidth		
+						var newT,newL,newB,newR
+						if(cursorState.indexOf('n')!=-1){
+							//新高度=原高度+光标向上移动距离
+
+							newHeight=boxInfo.h+cursorDownPos.cursorYdown-ev.clientY
+							newT=ev.clientY-(cursorDownPos.cursorYdown-boxInfo.t)	//小括号中代表鼠标按下时，光标距元素最高点距离
+							if(newHeight<100){
+								newHeight=100	//去掉的话，小于100时，拖上边框向下动，会出现上边框不动、下边框向上动的压缩动画效果。因为上边框通过下面的语句设置成了固定值，而下边框没有固定，而这时
+								newT=boxInfo.b-100	//因为向上和向左拖拽，需要指定left和top重新进行定位，所以这里要加这句。向下和向右不需要重新定位，所以不需要。
+							}
+							box.style.height=newHeight+'px'
+							box.style.top=newT+'px'
+						}
+						if(cursorState.indexOf('s')!=-1){
+							//新高度=原高度+光标向下移动距离
+							newHeight=boxInfo.h+ev.clientY-cursorDownPos.cursorYdown
+							if(newHeight<100){
+								newHeight=100
+							}
+							box.style.height=newHeight+'px'
+						}
+						if(cursorState.indexOf('w')!=-1){
+							//新宽度=原宽度+光标向左移动距离
+							newWidth=boxInfo.w+cursorDownPos.cursorXdown-ev.clientX
+							newL=ev.clientX-(cursorDownPos.cursorXdown-boxInfo.l)
+							if(newWidth<100){
+								newWidth=100
+								newL=boxInfo.r-100
+							}
+							box.style.width=newWidth+'px'
+							box.style.left=newL+'px'
+						}
+						if(cursorState.indexOf('e')!=-1){
+							//新宽度=原宽度+光标向右移动距离
+							newWidth=boxInfo.w+ev.clientX-cursorDownPos.cursorXdown
+							if(newWidth<100){
+								newWidth=100
+							}
+							box.style.width=newWidth+'px'
+						}
+					}
+				};
+				function getPos(obj){
+					return obj.getBoundingClientRect();
+				}				
+			};
+		</script>		
+	</body>
+</html>

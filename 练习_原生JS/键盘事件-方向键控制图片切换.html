@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			img{
+				vertical-align: top;
+			}
+			#box{
+				width: 1024px;
+				height: 768px;
+				overflow: hidden;
+				margin: 50px auto;
+				position: relative;
+			}
+			#box div{
+				position: absolute;
+				left: 0;
+				top: 0;
+				font-size: 0;
+			}
+		</style>
+		<script src="js/move.js"></script>
+		<script>
+			window.onload=function(){
+				var inner=document.querySelector("#box div");
+				var imgs=document.getElementsByTagName("img");
+				var w=imgs[0].offsetWidth;
+				var h=imgs[0].offsetHeight;
+				var isMoving=false;	//图片是否在运动。值为false，图片没有运动，用户按键有效。值为true，图片在运动，用户按键无效。
+				
+				document.onkeydown=function(ev){
+					console.log(ev.keyCode);
+					
+					if(isMoving){
+						//值为true，图片在运动，用户按键无效。
+						return;
+					}
+					
+					isMoving=true;		//运动开始了，让它的值为true，让用户不能点击了
+					
+					switch(ev.keyCode){
+						case 37:		//左
+							inner.style.width=w*imgs.length+'px';	//让图片横向排列
+							move(inner,{left:-w},400,'linear',function(){
+								//当运动走完了就把走过去的图片剪切放到最后面，就能形成首尾衔接了
+								inner.appendChild(imgs[0]);
+								inner.style.left=0;		//剪切后，第一张图片已经成为了最后一个节点了，而第二张图片成了为第一个节点，而图片的父级的left值已经是负的一个图片宽度了，想要让第二张图片显示在方块里，就需要把父级的left值设为0
+								
+								isMoving=false;		//运动停止了，让它的值为false，让用户可以再次点击
+							});
+							
+							break;
+						case 38:		//上
+							inner.style.width=w+'px';	//让图片竖向排列
+							move(inner,{top:-h},400,'linear',function(){
+								//当运动走完了就把走过去的图片剪切放到最后面，就能形成首尾衔接了
+								inner.appendChild(imgs[0]);
+								inner.style.top=0;
+								
+								isMoving=false;		//运动停止了，让它的值为false，让用户可以再次点击
+							});
+							break;
+						case 39:		//右
+							inner.style.width=w*imgs.length+'px';
+							inner.insertBefore(imgs[imgs.length-1],imgs[0]);	//往右走的话，要先把最后一张图片插入到最前面
+							inner.style.left=-w+'px';		//父级需要往左边走一个图片的宽度后，才能运动往右走
+							
+							move(inner,{left:0},400,'linear',function(){
+								isMoving=false;		//运动停止了，让它的值为false，让用户可以再次点击
+							});
+							break;
+						case 40:		//下
+							inner.style.width=w+'px';
+							inner.insertBefore(imgs[imgs.length-1],imgs[0]);	//往下走的话，要先把最后一张图片插入到最前面
+							inner.style.top=-h+'px';		//父级需要往上边走一个图片的宽度后，才能运动往下走
+							
+							move(inner,{top:0},400,'linear',function(){
+								isMoving=false;		//运动停止了，让它的值为false，让用户可以再次点击
+							});
+							break;
+					}
+				};
+			};
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<div>
+				<img src="img/keyEvent1.jpg" alt="1"/>
+				<img src="img/keyEvent2.jpg" alt="2"/>
+				<img src="img/keyEvent3.jpg" alt="3"/>
+				<img src="img/keyEvent4.jpg" alt="4"/>
+			</div>
+		</div>
+	</body>
+</html>

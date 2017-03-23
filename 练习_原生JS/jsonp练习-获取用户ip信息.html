@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.tips{
+				background-color: rgb(249,238,112);
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 200px;
+				height: 260px;
+				border-radius: 10px;
+				margin: 20px;
+				padding: 20px;
+			}
+			.wrap{
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				margin: auto;
+				width: 300px;
+				height: 200px;
+				border: black 1px solid;
+				text-align: center;
+			}
+			.location{
+				margin-top: 20px;
+				font-size: 24px;
+			}
+			input{
+				position: absolute;
+				bottom: 0;
+				margin: 20px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="tips">
+			<p>提示：</p>单击“获取”按钮，获取您所在的城市以及您当前使用的IP。
+		</div>
+		<div class="wrap">
+			<div class="location">
+			</div>
+			<input type="button" name="" id="" value="获取" />
+		</div>
+
+		<script>
+			var btn=document.getElementsByTagName('input')[0];
+			var box = document.getElementsByClassName('location')[0];
+			
+			function handleResponse(response){
+				response.city=(response.city=='Beijing')?'北京':response.city;
+				box.innerHTML="您目前位于<b>"+response.city+"</b>，使用IP为<b>"+response.ip+'</b>。';
+			}
+			
+			btn.onclick=function(){
+				var script = document.createElement('script');
+				script.src='http://freegeoip.net/json/?callback=handleResponse';
+				document.body.insertBefore(script, document.body.firstChild);
+			}
+		</script>
+	</body>
+</html>

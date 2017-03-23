@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.wrap{
+				width: 680px;
+				height: 200px;
+				border: solid 1px black;
+				margin: 0;
+				padding: 0;
+			}
+			.wrap li{
+				float: left;
+				list-style: none;
+			}
+			div{
+				float: left;
+				width: 200px;
+				height: 200px;
+				overflow: hidden;
+			}
+			img{
+				float: left;
+				width: 160px;
+				height: 200px;				
+			}
+			.content2{
+				width: 0;
+			}
+			.content3{
+				width: 0;
+			}
+			a{
+				display: block;
+				width: 200px;
+				text-decoration: none;
+			}
+		</style>
+		<script src="js/jquery-3.1.0.js"></script>
+	</head>
+	<body>
+		<ul class="wrap">
+			<li class="">
+				<img src="img/effier.jpeg"/>
+				<div class="content1">
+					<a>Lorem ipsum dolor sit amet</a>
+				</div>
+			</li>
+			<li class="">
+				<img src="img/effier2.jpeg"/>
+				<div class="content2">
+					<a>Lorem ipsum dolor sit amet</a>
+				</div
+			</li>
+			<li class="">
+				<img src="img/effier3.jpeg"/>
+				<div class="content3">
+					<a>Lorem ipsum dolor sit amet</a>
+				</div>
+			</li>
+		</ul>
+		<script type="text/javascript">
+			$(function(){
+				$('img').mouseover(function(){
+						$('div').stop().animate({width:0},500);
+						$(this).parent().find('div').stop().animate({width:200},500);
+				})
+			})
+		</script>
+	</body>
+</html>
